@@ -1,14 +1,16 @@
 // ==UserScript==
 // @name			VK Mod
 // @name:ru			Мод для Вконтакте
-// @namespace		SoThUg
+// @namespace			SoThUg
 // @version			0.9
-// @description		Add some function on site "vk.com"
-// @description:ru	Добавляет разные функции на сайт вконтакте
+// @description			Add some function on site "vk.com"
+// @description:ru		Добавляет разные функции на сайт вконтакте
 // @author			SoThUg
+// @downloadURL			https://raw.githubusercontent.com/sothug/vk-mod/master/VK_Mod.js
+// @updateURL			https://raw.githubusercontent.com/sothug/vk-mod/master/VK_Mod.js
 // @match			*://vk.com/*
 // @match			*://*.vk.com/*
-// @start-at		document-start
+// @start-at			document-start
 // @grant			none
 // ==/UserScript==
 
@@ -226,7 +228,7 @@ var menu = {
 			}
 		}
 		else {
-			let inputs_class = ["ads_left", "ads_block", "marked_as_ads", "story", "audio_ads", "dnr", "dnr_audio", "dnt", "ant_audio", "getDeep"]
+			let inputs_class = ["ads_left", "ads_block", "marked_as_ads", "story", "audio_ads", "dnr", "dnr_audio", "dnt", "dnt_audio", "getDeep"]
 
 			inputs_class.forEach((e, i, a) => {
 				let el = document.getElementsByClassName(`input_${e}`)[0]
