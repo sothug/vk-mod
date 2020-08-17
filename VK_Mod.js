@@ -784,22 +784,6 @@ function XHRListener() {
 	}
 }
 
-function vkApi() {
-	w.vkAsyncInit = function() {
-		VK.init({
-			apiId: 7556888
-		})
-	}
-
-	document.body.insertAdjacentHTML("afterBegin", "<div id=\"vk_api_transport\"></div>")
-
-	var api = document.createElement("script")
-	api.src = "https://vk.com/js/api/openapi.js?168"
-	api.type = "text/javascript"
-	api.async = true
-	document.getElementById("vk_api_transport").appendChild(api)
-}
-
 function watcher(id, oldVal, val) {
 	console.debug("Watcher:", id, oldVal, val);
 	switch(id) {
@@ -918,7 +902,5 @@ function setWindow(w) {
 	})
 
 	w.addEventListener('load', function() {
-		//vkApi()
-		//menu.show()
 	})
 })(window)
