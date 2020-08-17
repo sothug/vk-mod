@@ -1,16 +1,16 @@
 // ==UserScript==
 // @name			VK Mod
 // @name:ru			Мод для Вконтакте
-// @namespace			SoThUg
-// @version			0.9
-// @description			Add some function on site "vk.com"
-// @description:ru		Добавляет разные функции на сайт вконтакте
+// @namespace		SoThUg
+// @version			0.12
+// @description		Add some function on site "vk.com"
+// @description:ru	Добавляет разные функции на сайт вконтакте
 // @author			SoThUg
-// @downloadURL			https://raw.githubusercontent.com/sothug/vk-mod/master/VK_Mod.js
-// @updateURL			https://raw.githubusercontent.com/sothug/vk-mod/master/VK_Mod.js
+// @downloadURL		https://raw.githubusercontent.com/sothug/vk-mod/master/VK_Mod.js
+// @updateURL		https://raw.githubusercontent.com/sothug/vk-mod/master/VK_Mod.js
 // @match			*://vk.com/*
 // @match			*://*.vk.com/*
-// @start-at			document-start
+// @start-at		document-start
 // @grant			none
 // ==/UserScript==
 
@@ -26,6 +26,10 @@ const default_storage = {
 	ads_block: true,
 	marked_as_ads: true,
 	story: false,
+	recom_friend: true,
+	recom_app: true,
+	popul_clips: true,
+	round: true,
 	audio_ads: true,
 	dnr: true,
 	dnr_audio: true,
@@ -98,14 +102,14 @@ var menu = {
 <div id="vk_mod_menu">
 	<div id="vk_mod_menu_bg" onclick="vkMod.menu.close()"></div>
 	<div id="vk_mod_menu_wrap">
-		<div class="popup_box_container" style="width: fit-content;height: auto;margin-top: 20vh;z-index: 10500;position: relative;" tabindex="0">
+		<div class="popup_box_container" style="width: fit-content;height: auto;margin-top: 15vh;z-index: 10500;position: relative;" tabindex="0">
 			<div class="box_layout">
 				<div class="vk_mod_menu_box_title box_title_wrap" style="">
 					<div class="box_x_button" aria-label="Закрыть" tabindex="0" role="button" onclick="vkMod.menu.close()"></div>
-					<div class="box_title_controls">VK Mod 0.9</div>
+					<div class="box_title_controls" style="display: none;">Здесь что-то может быть</div>
 					<div class="box_title">Настройки VK Mod</div>
 				</div>
-				<div class="vk_mod_menu_box_body box_body box_no_buttons" style="display: block;padding: 1vh 2vh 1vh 2vh">
+				<div class="vk_mod_menu_box_body box_body" style="display: block;padding: 1vh 2vh 1vh 2vh">
 					<div class="settings_line">
 						<div class="settings_label">Реклама</div>
 						<div class="settings_labeled_text">
@@ -131,7 +135,36 @@ var menu = {
 									vkMod.styles.updateStyles('marked_as_ads')
 									vkMod.menu.updateInputs('marked_as_ads')
 								">
-								<label for="vk_mod_settigns_marked_as_ads">Выключить посты с проплаченной рекламой(работает наполовину)</label>
+								<label for="vk_mod_settigns_marked_as_ads">Выключить посты с проплаченной рекламой</label>
+							</div>
+						</div>
+					</div>
+					<div class="settings_line">
+						<div class="settings_label">Лента новостей</div>
+						<div class="settings_labeled_text">
+							<div class="settings_labeled_row">
+								<input id="vk_mod_settigns_recom_friend" type="checkbox" class="vk_mod_input _checkbox input_recom_friend" onchange="
+									vkMod.setStorageForId('vk_mod_preference', 'recom_friend', document.getElementsByClassName('input_recom_friend')[0].checked, vk.id);
+									vkMod.styles.updateStyles('recom_friend')
+									vkMod.menu.updateInputs('recom_friend')
+								">
+								<label for="vk_mod_settigns_recom_friend">Включить "Рекомендованные друзья"</label>
+							</div>
+							<div class="settings_labeled_row">
+								<input id="vk_mod_settigns_recom_app" type="checkbox" class="vk_mod_input _checkbox input_recom_app" onchange="
+									vkMod.setStorageForId('vk_mod_preference', 'recom_app', document.getElementsByClassName('input_recom_app')[0].checked, vk.id);
+									vkMod.styles.updateStyles('recom_app')
+									vkMod.menu.updateInputs('recom_app')
+								">
+								<label for="vk_mod_settigns_recom_app">Включить блок "Рекомендованные приложения"</label>
+							</div>
+							<div class="settings_labeled_row">
+								<input id="vk_mod_settigns_popul_clips" type="checkbox" class="vk_mod_input _checkbox input_popul_clips" onchange="
+									vkMod.setStorageForId('vk_mod_preference', 'popul_clips', document.getElementsByClassName('input_popul_clips')[0].checked, vk.id);
+									vkMod.styles.updateStyles('popul_clips')
+									vkMod.menu.updateInputs('popul_clips')
+								">
+								<label for="vk_mod_settigns_popul_clips">Включить блок "Популярные клипы"</label>
 							</div>
 						</div>
 					</div>
@@ -145,6 +178,14 @@ var menu = {
 									vkMod.menu.updateInputs('story')
 								">
 								<label for="vk_mod_settigns_story">Выключить блок историй</label>
+							</div>
+							<div class="settings_labeled_row">
+								<input id="vk_mod_settigns_round" type="checkbox" class="vk_mod_input _checkbox input_round" onchange="
+									vkMod.setStorageForId('vk_mod_preference', 'round', document.getElementsByClassName('input_round')[0].checked, vk.id);
+									vkMod.styles.updateStyles('round')
+									vkMod.menu.updateInputs('round')
+								">
+								<label for="vk_mod_settigns_round">Включить закругления</label>
 							</div>
 						</div>
 					</div>
@@ -203,8 +244,38 @@ var menu = {
 								">
 								<label for="vk_mod_settigns_getDeep">Глубина ожидания переменной</label>
 							</div>
+							<div class="settings_labeled_row">
+								<button id="vk_mod_settigns_updateInputs" class="vk_mod_button button_updateInputs flat_button dark" onclick="vkMod.menu.updateInputs()">
+									Обновить поля ввода в меню
+								</button>
+							</div>
+							<div class="settings_labeled_row">
+								<button id="vk_mod_settigns_updateStyles" class="vk_mod_button button_updateStyles flat_button dark" onclick="vkMod.styles.updateStyles()">
+									Обновить стили
+								</button>
+							</div>
 						</div>
 					</div>
+				</div>
+				<div class="box_controls_wrap">
+					<div class="box_controls">
+						<table cellspacing="0" cellpadding="0" class="fl_r">
+							<tbody>
+								<tr><td>
+									<button class="flat_button secondary has_tooltip" onclick="vkMod.setStorage('vk_mod_preference', vk.id, vkMod.default_storage); vkMod.menu.updateInputs(); vkMod.styles.updateStyles()">
+										Настройки по умолчанию
+										<span class="tooltiptext">Устанавливает настройки по умолчанию</span>
+									</button>
+									<button class="flat_button has_tooltip" onclick="location.href='https://vk.me/join/AJQ1d94uiBiCO4Ymc0eeuD_f'">
+										Перейти в беседу
+										<span class="tooltiptext">Откроет беседу обсуждения данного мода</span>
+									</button>
+								</td></tr>
+							</tbody>
+						</table>
+						<div class="box_controls_text _box_controls_text">VK Mod 0.11 beta</div>
+					</div>
+					<div></div>
 				</div>
 			</div>
 		</div>
@@ -228,7 +299,7 @@ var menu = {
 			}
 		}
 		else {
-			let inputs_class = ["ads_left", "ads_block", "marked_as_ads", "story", "audio_ads", "dnr", "dnr_audio", "dnt", "dnt_audio", "getDeep"]
+			let inputs_class = ["ads_left", "ads_block", "marked_as_ads", "story", "recom_friend", "recom_app", "popul_clips", "round", "audio_ads", "dnr", "dnr_audio", "dnt", "dnt_audio", "getDeep"]
 
 			inputs_class.forEach((e, i, a) => {
 				let el = document.getElementsByClassName(`input_${e}`)[0]
@@ -270,17 +341,20 @@ var menu = {
 var styles = {
 	menu: `
 <style id="vk_mod_style_menu">
-	[dir] #vk_mod_menu {
+	[dir] #vk_mod_menu_bg {
 		background: rgba(0, 0, 0, 0.7);
 	}
-	[dir=ltr] #vk_mod_menu {
+	[dir=ltr] #vk_mod_menu,
+	#vk_mod_menu_bg {
 		left: 0;
 	}
-	#vk_mod_menu {
+	#vk_mod_menu,
+	#vk_mod_menu_bg {
 		position: fixed;
 		width: 100%;
 		height: 100%;
 		z-index: 10000;
+		top: 0;
 	}
 	.vk_mod_menu_box_body {
 		max-height: 50vmin;
@@ -289,6 +363,7 @@ var styles = {
 	.vk_mod_input._number {
 		width: 10vmax;
 	}
+
 	[dir] .settings_line {
 		margin: 0;
 		padding: 15px 0 14px;
@@ -311,6 +386,34 @@ var styles = {
 	}
 	.settings_labeled_row {
 		margin-bottom: 5px;
+	}
+
+	.has_tooltip {
+		display: inline-block !important;
+	}
+	.has_tooltip ._underlined {
+		border-bottom: 1px dotted black;
+	}
+	.has_tooltip .tooltiptext {
+		visibility: hidden !important;
+		opacity: 0;
+		transition: 0.5s;
+
+		background-color: black;
+		color: #fff;
+		text-align: center;
+		border-radius: 6px;
+		padding: 5px;
+
+		position: absolute !important;
+		z-index: 150000;
+	}
+	.has_tooltip:hover .tooltiptext {
+		visibility: visible !important;
+		opacity: 1;
+		transition: 0.5s 0.5s;
+
+		z-index: 150000;
 	}
 </style>
 	`,
@@ -337,8 +440,75 @@ var styles = {
 	`,
 	story: `
 <style id="vk_mod_style_story">
-	.stories_feed_wrap {
+	.stories_feed_wrap,
+	.page_story_photo {
 		display: none !important;
+	}
+</style>
+	`,
+	recom_friend: `
+<style id="vk_mod_style_recom_friend">
+	.feed_friends_recomm {
+		display: none !important;
+	}
+</style>
+	`,
+	recom_app: `
+<style id="vk_mod_style_recom_app">
+	.apps_feedRightAppsBlock {
+		display: none !important;
+	}
+</style>
+	`,
+	popul_clips: `
+<style id="vk_mod_style_popul_clips">
+	.ShortVideoFeedBlock {
+		display: none !important;
+	}
+</style>
+	`,
+	round: `
+<style id="vk_mod_style_round">
+	.flat_button.profile_btn_cut_right {
+		border-radius: 0px 10px 10px 0px !important;
+	}
+	.flat_button.profile_btn_cut_left {
+		border-radius: 10px 0px 0px 10px !important;
+	}
+	.page_block,
+	.eltt,
+	#top_profile_menu,
+	.ts_cont_wrap,
+	.flat_button,
+	.token,
+	.left_count_wrap,
+	.ms_items_more,
+	.BaseModal__content,
+	.ChatSettings,
+	.ui_actions_menu,
+	.page_actions_wrap,
+	.submit_post_field,
+	.box_no_title.box_no_buttons {
+		border-radius: 10px !important;
+	}
+	.ui_search_input_block {
+		border-radius: 8px !important;
+	}
+	.page_block_header,
+	.page_block_h2,
+	.ui_tabs_header,
+	.box_title_wrap,
+	.page_cover,
+	.PopupHeader,
+	.box_no_title,
+	.ui_tabs,
+	.ui_tabs_box {
+		border-radius: 10px 10px 0px 0px !important;
+	}
+	.box_controls,
+	.box_no_buttons,
+	.ChatSettings__content {
+		border-radius: 0px 0px 10px 10px !important;
 	}
 </style>
 	`,
@@ -359,7 +529,7 @@ var styles = {
 			}
 		}
 		else {
-			let styles_list = ["ads_left", "ads_block", "marked_as_ads", "story"]
+			let styles_list = ["ads_left", "ads_block", "marked_as_ads", "story", "recom_friend", "recom_app", "popul_clips", "round"]
 			
 			styles_list.forEach((e, i, a) => {
 				let el = document.getElementById(`vk_mod_style_${e}`)
@@ -447,6 +617,55 @@ function setDNRStatus(id, val = true) {
 
 	if (!val && !DNR.match(`.${id}.`)) {
 		setStorageForId(storageName, "dnr_preference", DNR + `.${id}.`, vk.id)
+	}
+}
+
+function postsAds(id, oldVal, val) {
+	switch (id) {
+		case "cur":
+			console.log(val.wallPage || val.rowsCont)
+			if (getStorageForId(storageName, vk.id)["marked_as_ads"] == undefined) {
+				setStorageForId(storageName, "marked_as_ads", default_storage["marked_as_ads"], vk.id)
+			}
+			let post_page = (val.wallPage || val.rowsCont)
+			if (getStorageForId(storageName, vk.id)["marked_as_ads"] && post_page) {
+				post_page.getElementsByClassName("wall_marked_as_ads").forEach((e, i, a) => {
+					e.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.classList.add("marked_as_ads")
+				})
+				if (post_page == val.wallPage) {
+					get.varOnWindow("wall", (id, val) => {
+						let {showMore} = val
+
+						val.showMore = function() {
+							let result = showMore.apply(this, Array.prototype.slice.call(arguments))
+
+							post_page.getElementsByClassName("wall_marked_as_ads").forEach((e, i, a) => {
+								e.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.classList.add("marked_as_ads")
+							})
+
+							return result
+						}
+					})
+				}
+				if (post_page == val.rowsCont) {
+					get.varOnWindow("feed", (id, val) => {
+						let {showMore} = val
+
+						val.showMore = function() {
+							let result = showMore.apply(this, Array.prototype.slice.call(arguments))
+
+							post_page.getElementsByClassName("wall_marked_as_ads").forEach((e, i, a) => {
+								e.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.classList.add("marked_as_ads")
+							})
+
+							return result
+						}
+					})
+				}
+			}
+			return val
+		default:
+			return val
 	}
 }
 
@@ -548,20 +767,20 @@ function XHRListener() {
 
 	XMLHttpRequest.prototype.send = function (data) {
 		if (/type=typing/.test(data) && getStorageForId(storageName, vk.id)["dnt"] && getDNTStatus(data.match(/peer=([0-9]+)/)[1])) {
-			this.abort()
+			return this.abort()
 		}
 		if (/type=audiomessage/.test(data) && getStorageForId(storageName, vk.id)["dnt_audio"] && getDNTStatus(data.match(/peer=([0-9]+)/)[1])) {
-			this.abort()
+			return this.abort()
 		}
 
 		if (/act=a_mark_read/.test(data) && getStorageForId(storageName, vk.id)["dnr"] && getDNRStatus(data.match(/peer=([0-9]+)/)[1])) {
-			this.abort()
+			return this.abort()
 		}
 		if (/act=a_mard_listened/.test(data) && getStorageForId(storageName, vk.id)["dnr_audio"] && getDNTStatus(data.match(/peer=([0-9]+)/)[1])) {
-			this.abort()
+			return this.abort()
 		}
 
-		send.apply(this, Array.prototype.slice.call(arguments))
+		return send.apply(this, Array.prototype.slice.call(arguments))
 	}
 }
 
@@ -589,21 +808,9 @@ function watcher(id, oldVal, val) {
 				let {start} = val;
 				val.start = function(a) {start.apply(this, Array.prototype.slice.call(arguments)); setTimeout(function() {val.skip()}, 100)};
 			}
-			return val;
-		case "cur":
-			if (getStorageForId(storageName, vk.id)["marked_as_ads"] == undefined) {
-				setStorageForId(storageName, "marked_as_ads", default_storage["marked_as_ads"], vk.id)
-			}
-			if (getStorageForId(storageName, vk.id)["marked_as_ads"] && ["feed", "public"].includes(val.module)) {
-				get.elementOnDOM(".wall_marked_as_ads", (id, val) => {
-					val.forEach((e, i, a) => {
-						e.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.classList.add("marked_as_ads")
-					})
-				})
-			}
-			return val;
+			return val
 		default:
-			return val;
+			return val
 	}
 }
 
@@ -669,6 +876,8 @@ function setWindow(w) {
 	w.vkMod = {}
 	vkMod = w.vkMod
 
+	vkMod.default_storage = default_storage
+
 	vkMod.getStorage = getStorage
 	vkMod.getStorageForId = getStorageForId
 	vkMod.setStorage = setStorage
@@ -700,24 +909,16 @@ function setWindow(w) {
 
 	get.varOnWindow("uiActionsMenu", (id, val) => {uiActionsMenu = val; setUI(id, val)})
 	get.elementOnDOM("#top_profile_menu", (id, val) => {setUI(id, val)})
-	get.varOnWindow("vk", (id, val) => {vk = val})
+	get.varOnWindow("vk", (id, val) => {vk = val; styles.updateStyles()})
 	get.varOnWindow("ap", (id, val) => {ap = val; ap.ads.watchh(`_adman`, watcher)})
 	get.varOnWindow("cur", (id, val) => {
 		cur = val
-		w.watchh(`cur`, watcher)
-		if (getStorageForId(storageName, vk.id)["marked_as_ads"] == undefined) {
-			setStorageForId(storageName, "marked_as_ads", default_storage["marked_as_ads"], vk.id)
-		}
-		if (getStorageForId(storageName, vk.id)["marked_as_ads"] && (val.module == "feed" || val.module == "public")) {
-			document.getElementsByClassName("wall_marked_as_ads").forEach((e, i, a) => {
-				e.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.classList.add("marked_as_ads")
-			})
-		}
+		w.watchh(`cur`, postsAds)
+		postsAds("cur", null, cur)
 	})
 
 	w.addEventListener('load', function() {
 		//vkApi()
-		styles.updateStyles()
 		//menu.show()
 	})
 })(window)
