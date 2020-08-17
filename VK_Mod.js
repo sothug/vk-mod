@@ -8,6 +8,7 @@
 // @author			SoThUg
 // @downloadURL		https://raw.githubusercontent.com/sothug/vk-mod/master/VK_Mod.js
 // @updateURL		https://raw.githubusercontent.com/sothug/vk-mod/master/VK_Mod.js
+// @icon			https://github.com/sothug/vk-mod/blob/master/icon.png?raw=true
 // @match			*://vk.com/*
 // @match			*://*.vk.com/*
 // @start-at		document-start
