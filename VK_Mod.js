@@ -2,7 +2,7 @@
 // @name			VK Mod
 // @name:ru			Мод для Вконтакте
 // @namespace		SoThUg
-// @version			0.13
+// @version			0.11
 // @description		Add some function on site "vk.com"
 // @description:ru	Добавляет разные функции на сайт вконтакте
 // @author			SoThUg
