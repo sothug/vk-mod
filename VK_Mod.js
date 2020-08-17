@@ -273,7 +273,7 @@ var menu = {
 								</td></tr>
 							</tbody>
 						</table>
-						<div class="box_controls_text _box_controls_text">VK Mod 0.11 beta</div>
+						<div class="box_controls_text _box_controls_text">VK Mod 0.11</div>
 					</div>
 					<div></div>
 				</div>
